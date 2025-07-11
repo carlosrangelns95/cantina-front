@@ -9,7 +9,7 @@ export default function ConfirmationPage() {
     const handleCheckout = async () => {
         if (cartItems.length === 0) {
             alert("Seu carrinho está vazio!");
-            navigate('/student/cardapio');
+            navigate('/student/menu');
             return;
         }
 
@@ -70,7 +70,7 @@ export default function ConfirmationPage() {
             <p className="total-items">Total de itens: {getTotalItems()}</p>
             <div className="confirmation-actions">
                 <button onClick={handleCheckout} className="checkout-button">Finalizar Compra</button>
-                <button onClick={() => navigate('/student/cardapio')} className="back-button">Voltar ao Cardápio</button>
+                <button onClick={() => navigate('/student/menu')} className="back-button">Voltar ao Cardápio</button>
             </div>
         </div>
     );

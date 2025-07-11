@@ -13,8 +13,7 @@ export default function Login() {
         setError('');
 
         try {
-            // 1. Requisição para o endpoint de login e obtenção do token JWT
-            const loginResponse = await fetch('http://localhost:9508/auth/login', {
+            const loginResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,8 +33,7 @@ export default function Login() {
             const { token } = resp;
             localStorage.setItem('cantina-token', token);
 
-            // 2. Requisição para o endpoint que retorna os dados do usuário logado
-            const userResponse = await fetch('http://localhost:9508/auth/me', {
+            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -48,7 +46,6 @@ export default function Login() {
 
             const user = await userResponse.json();
 
-            // 3. Redirecionamento baseado no perfil do usuário
             if (user.profiles[0].role === 'ADMIN') {
                 navigate('/admin');
             } else if (user.profiles[0].role === 'STUDENT') {
@@ -68,7 +65,6 @@ export default function Login() {
     };
 
     return (
-        // <-- 2. Adicione a classe 'login-container' aqui na div principal!
         <div className="login-container">
             <h2>Login</h2>
             <form onSubmit={handleLogin}>
