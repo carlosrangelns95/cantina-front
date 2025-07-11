@@ -1,0 +1,77 @@
+.self-register-container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.self-register-container h2 {
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.self-register-container .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.self-register-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+    font-weight: bold;
+}
+
+.self-register-container input[type="text"],
+.self-register-container input[type="email"],
+.self-register-container input[type="password"],
+.self-register-container input[type="tel"],
+.self-register-container select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.self-register-container input:focus,
+.self-register-container select:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.self-register-container button[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.self-register-container button[type="submit"]:hover {
+    background-color: #229a54;
+}
+
+.self-register-container .error-message {
+    color: #e74c3c;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.self-register-container .success-message {
+    color: #28a745;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}

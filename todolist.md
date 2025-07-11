@@ -1,0 +1,7 @@
+- tela de login                                     - OK
+- rotas privadas (area admin e area estudante)      - OK
+- tela de cardápio                                  - OK
+- carinho de compras                                - OK
+- adição de itens ao carrinho                       - OK
+- finalização do pedido com confirmação
+- histórico de pedidos feitos

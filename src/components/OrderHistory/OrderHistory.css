@@ -1,0 +1,108 @@
+.order-history-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.order-history-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.orders-list {
+    display: grid;
+    gap: 20px;
+}
+
+.order-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order-card h3 {
+    color: #007bff;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+}
+
+.order-card p {
+    margin-bottom: 5px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.order-card strong {
+    color: #333;
+}
+
+.order-status {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    color: white;
+}
+
+.order-status.pending {
+    background-color: #ffc107;
+    color: #333;
+}
+
+.order-status.completed {
+    background-color: #28a745;
+}
+
+.order-status.cancelled {
+    background-color: #dc3545;
+}
+
+.order-status.processing {
+    background-color: #17a2b8;
+}
+
+
+.order-items {
+    margin-top: 15px;
+    border-top: 1px dashed #e9ecef;
+    padding-top: 15px;
+}
+
+.order-items h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #666;
+    font-size: 1em;
+}
+
+.order-items ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.order-items li {
+    background-color: #f2f2f2;
+    padding: 8px 10px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95em;
+    color: #444;
+}
+
+.error-message {
+    color: #dc3545;
+    text-align: center;
+    font-weight: bold;
+}
