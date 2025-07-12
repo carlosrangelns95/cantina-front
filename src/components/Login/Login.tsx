@@ -33,7 +33,7 @@ export default function Login() {
             const { token } = resp;
             localStorage.setItem('cantina-token', token);
 
-            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/user/me`, {
+            const userResponse = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
