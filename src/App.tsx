@@ -5,9 +5,10 @@ import LayoutStudent from './components/LayoutStudent/layoutStudent';
 import PrivateRoute from './components/privateRoute';
 import MenuList from './components/MenuList/MenuList';
 import SelfRegister from './components/SelfRegister/SelfRegister';
-import './App.css';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage';
 import OrderHistory from './components/OrderHistory/OrderHistory';
+import ProductList from './components/ProductList/ProductList';
+import './App.css';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 
         <Route element={<PrivateRoute allowedProfiles={['ADMIN']} />}>
           <Route path="/admin" element={<LayoutAdmin />}>
+           <Route path="products" element={<ProductList />} />
           </Route>
         </Route>
 
