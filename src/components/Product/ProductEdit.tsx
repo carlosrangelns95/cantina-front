@@ -2,16 +2,23 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Card, Spinner, Alert } from 'react-bootstrap';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
+import type { IProduct } from '../../types/types';
 
 const categories = ['SALGADO', 'DOCE', 'BEBIDA', 'LANCHE', 'FRUTA'];
 
-const ProductEdit = () => {
+export default function ProductEdit() {
     const { id } = useParams();
-    const [productData, setProductData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [productData, setProductData] = useState<IProduct>({
+        id: '',
+        name: '',
+        value: 0,
+        category: categories[0] || '',
+    });
     const navigate = useNavigate();
+
 
     useEffect(() => {
         const loadProduct = async () => {
@@ -24,20 +31,20 @@ const ProductEdit = () => {
 
             const data = await rest.json();
 
+            const {deletedAt, updatedAt, createdAt, ...productData} = data;
+
             if (data) {
-                setProductData(data);
+                setProductData(productData);
             } else {
                 setError('Produto não encontrado ou erro ao carregar.');
             }
-
-            console.log('data: ', data);
 
             setLoading(false);
         };
         loadProduct();
     }, [id]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (e: any) => {
         const { name, value } = e.target;
         setProductData({
             ...productData,
@@ -50,20 +57,21 @@ const ProductEdit = () => {
         setSaving(true);
         setError(null);
 
-        if (!productData.name || productData.price <= 0) {
+        if (!productData.name || productData.value <= 0) {
             setError('Nome e preço (maior que zero) são obrigatórios.');
             setSaving(false);
             return;
         }
 
-        const resp = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
-            method: 'PUT',
+        const { id, ...productDataWithoutId } = productData;
+
+        const resp = await fetch(`${import.meta.env.VITE_API_URL}/product/${id}`, {
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                id,
-                ...productData,
+                ...productDataWithoutId,
             }),
         });
 
@@ -75,7 +83,7 @@ const ProductEdit = () => {
 
         if (updatedProduct) {
             alert('Produto atualizado com sucesso!');
-            navigate('/products');
+            navigate('/admin/products');
         } else {
             setError('Não foi possível atualizar o produto. Verifique os dados e tente novamente.');
         }
@@ -109,6 +117,8 @@ const ProductEdit = () => {
             </Container>
         );
     }
+
+    console.log('productData: ', productData);
 
     return (
         <Container className="mt-4">
@@ -181,5 +191,3 @@ const ProductEdit = () => {
         </Container>
     );
 };
-
-export default ProductEdit;

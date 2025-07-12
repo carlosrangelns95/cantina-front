@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
-// import ConfirmModal from '../components/ConfirmModal';
-import './ProductStyles.css'
 import ConfirmModal from '../ConfirmModal/ConfirmModal';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import './ProductStyles.css'
+import type { IProduct } from '../../types/types';
 
 export default function ProductList() {
     console.log('ProductList');
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState<IProduct[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-    const [productToDelete, setProductToDelete] = useState(null);
+    const [productToDelete, setProductToDelete] = useState<IProduct | null>(null);
     const navigate = useNavigate();
 
     const fetchProducts = async () => {
@@ -44,7 +44,7 @@ export default function ProductList() {
         navigate(`/admin/products/edit/${id}`, { replace: true });
     };
 
-    const handleDeleteClick = (id, name) => {
+    const handleDeleteClick = (id: string, name: string) => {
         setProductToDelete({ id, name });
         setShowDeleteModal(true);
     };
@@ -66,7 +66,7 @@ export default function ProductList() {
             fetchProducts();
         } catch (err) {
             console.error('Erro ao excluir produto:', err);
-            alert(`Erro ao excluir produto: ${err.message}`);
+            alert(`Erro ao excluir produto: ${err}`);
         } finally {
             setLoading(false);
             setProductToDelete(null);
@@ -114,7 +114,7 @@ export default function ProductList() {
                             <div className="product-info">
                                 <span className="product-index">{index + 1}.</span>
                                 <span>{product.name}</span>
-                                <span className="ms-3 text-muted"> R$ {product.price ? product.price.toFixed(2) : '0.00'}</span>
+                                <span className="ms-3 text-muted"> R$ {product.value ? product.value.toFixed(2) : '0.00'}</span>
                             </div>
                             <div className="product-actions">
                                 <button className="btn-action btn-edit" onClick={() => handleEdit(product.id)}>

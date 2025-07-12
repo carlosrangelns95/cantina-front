@@ -32,3 +32,10 @@ export interface IConfirmModalProps {
     onConfirm: () => void;
     onCancel: () => void;
 }
+
+export interface IProduct {
+    id: string;
+    name: string;
+    value: number;
+    category: string;
+}
