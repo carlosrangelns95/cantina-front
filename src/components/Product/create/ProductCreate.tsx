@@ -1,23 +1,26 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
-import './ProductStyles.css';
+import './ProductCreate.css';
 
-const ProductCreate = () => {
-    const [productData, setProductData] = useState({
-        name: '',
-        description: '',
-        price: 0,
-    });
+const categories = ['SALGADO', 'DOCE', 'BEBIDA', 'LANCHE', 'FRUTA'];
+
+export default function ProductCreate() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [category, setCategory] = useState('SALGADO');
     const navigate = useNavigate();
+    const [productData, setProductData] = useState({
+        name: '',
+        category: category,
+        value: 0,
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setProductData({
             ...productData,
-            [name]: name === 'price' ? parseFloat(value) : value,
+            [name]: name === 'value' ? parseFloat(value) : value,
         });
     };
 
@@ -26,7 +29,7 @@ const ProductCreate = () => {
         setLoading(true);
         setError(null);
 
-        if (!productData.name.trim() || productData.price <= 0 || isNaN(productData.price)) {
+        if (!productData.name.trim() || productData.value <= 0 || isNaN(productData.value)) {
             setError('Nome e preço (maior que zero) são obrigatórios.');
             setLoading(false);
             return;
@@ -40,6 +43,7 @@ const ProductCreate = () => {
                 },
                 body: JSON.stringify(productData),
             });
+
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Erro ao criar produto.');
@@ -81,13 +85,13 @@ const ProductCreate = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="price" className="form-label">Preço</label>
+                        <label htmlFor="value" className="form-label">Preço</label>
                         <input
                             type="number"
-                            id="price"
-                            name="price"
+                            id="value"
+                            name="value"
                             className="form-control"
-                            value={productData.price}
+                            value={productData.value}
                             onChange={handleChange}
                             step="0.01"
                             required
@@ -95,15 +99,20 @@ const ProductCreate = () => {
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="description" className="form-label">Descrição</label>
-                        <textarea
-                            id="description"
-                            name="description"
-                            className="form-control"
-                            value={productData.description}
-                            onChange={handleChange}
-                            rows={3}
-                        ></textarea>
+                        <label htmlFor="profile">Categoria</label>
+                        <select
+                            id="profile"
+                            value={category}
+                            onChange={(e) => {
+                                setCategory(e.target.value);
+                            }}
+                        >
+                            {
+                                categories.map(category => (
+                                    <option value={category} key={category}>{category}</option>
+                                ))
+                            }
+                        </select>
                     </div>
 
                     <div className="form-buttons">
@@ -121,5 +130,3 @@ const ProductCreate = () => {
         </div>
     );
 };
-
-export default ProductCreate;

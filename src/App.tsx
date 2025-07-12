@@ -8,7 +8,7 @@ import SelfRegister from './components/SelfRegister/SelfRegister';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage';
 import OrderHistory from './components/OrderHistory/OrderHistory';
 import ProductList from './components/Product/ProductList';
-import ProductCreate from './components/Product/ProductCreate';
+import ProductCreate from './components/Product/create/ProductCreate';
 import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
 

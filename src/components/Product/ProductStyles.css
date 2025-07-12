@@ -1,34 +1,5 @@
-/* src/styles/ProductStyles.css */
-
-/* Estilos Gerais do Contêiner */
-.product-container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Título e Botão de Novo Produto */
-.product-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.product-header h2 {
-    color: #343a40;
-    font-size: 2em;
-    margin: 0;
-}
-
 .btn-new-product {
     background-color: #28a745;
-    /* Verde */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -45,7 +16,6 @@
     background-color: #218838;
 }
 
-/* Lista de Produtos */
 .product-list {
     list-style: none;
     padding: 0;
@@ -79,7 +49,6 @@
     font-weight: bold;
     margin-right: 10px;
     color: #007bff;
-    /* Azul */
 }
 
 .product-actions {
@@ -100,7 +69,6 @@
 
 .btn-edit {
     background-color: #007bff;
-    /* Azul */
     color: white;
     border: none;
 }
@@ -111,7 +79,6 @@
 
 .btn-delete {
     background-color: #dc3545;
-    /* Vermelho */
     color: white;
     border: none;
 }
@@ -120,93 +87,6 @@
     background-color: #c82333;
 }
 
-/* Formulário de Produto (Create/Edit) */
-.product-form-card {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.form-group {
-    margin-bottom: 18px;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #343a40;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
-    /* Garante que padding não aumente a largura */
-}
-
-.form-control:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.form-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 25px;
-}
-
-.btn-back {
-    background-color: #6c757d;
-    /* Cinza */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.2s ease;
-}
-
-.btn-back:hover {
-    background-color: #5a6268;
-}
-
-.btn-save {
-    background-color: #007bff;
-    /* Azul */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: background-color 0.2s ease;
-}
-
-.btn-save:hover {
-    background-color: #0056b3;
-}
-
-.btn-save:disabled {
-    background-color: #a0c4ff;
-    cursor: not-allowed;
-}
-
-
-/* Mensagens de Estado (Loading, Error, Empty) */
 .message-container {
     text-align: center;
     padding: 30px;
@@ -237,19 +117,8 @@
     }
 }
 
-.error-message {
-    color: #dc3545;
-    /* Vermelho */
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-    padding: 15px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
-
 .info-message {
     color: #0056b3;
-    /* Azul */
     background-color: #cfe2ff;
     border: 1px solid #b9d7fa;
     padding: 15px;
@@ -257,7 +126,6 @@
     margin-bottom: 20px;
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -293,7 +161,6 @@
 .modal-header .icon {
     margin-right: 10px;
     color: #ffc107;
-    /* Amarelo de aviso */
 }
 
 .modal-body p {
@@ -336,18 +203,14 @@
     background-color: #c82333;
 }
 
-/* Navbar */
 .app-navbar {
     background-color: #f8f9fa;
-    /* Cor de fundo clara */
     padding: 15px 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .05);
-    /* Sombra suave */
 }
 
 .navbar-container {
     max-width: 1200px;
-    /* Largura máxima do conteúdo */
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
@@ -359,32 +222,26 @@
     font-size: 1.5rem;
     font-weight: bold;
     color: #343a40;
-    /* Cor do texto */
     text-decoration: none;
-    /* Remover sublinhado */
 }
 
 .navbar-brand:hover {
     color: #007bff;
-    /* Cor ao passar o mouse */
 }
 
 .navbar-nav {
     display: flex;
     list-style: none;
-    /* Remover marcadores de lista */
     margin: 0;
     padding: 0;
 }
 
 .nav-item {
     margin-left: 20px;
-    /* Espaçamento entre os itens */
 }
 
 .nav-link {
     color: #6c757d;
-    /* Cor do texto dos links */
     text-decoration: none;
     padding: 8px 12px;
     border-radius: 5px;
@@ -393,7 +250,15 @@
 
 .nav-link:hover {
     color: #007bff;
-    /* Cor ao passar o mouse */
     background-color: #e9ecef;
-    /* Fundo suave ao passar o mouse */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
