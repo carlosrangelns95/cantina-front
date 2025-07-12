@@ -54,10 +54,11 @@
 }
 
 .back-button {
-    background-color: #007bff;
-    color: white;
-}
-
-.back-button:hover {
-    background-color: #0056b3;
+    background-color: #34495eb3;
+    color: #ffff;
+    padding: .5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
