@@ -10,3 +10,17 @@ export interface IOrder {
         price: string;
     }[];
 }
+
+export interface ICartItem {
+    id: string;
+    quantity: number;
+    name: string;
+}
+
+export interface ICartContextType {
+    cartItems: ICartItem[];
+    addToCart: (product: { id: string;[key: string]: any }) => void;
+    removeFromCart: (productId: string) => void;
+    getTotalItems: () => number;
+    clearCart: () => void;
+}

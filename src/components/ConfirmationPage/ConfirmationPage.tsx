@@ -1,6 +1,7 @@
 import { useCart } from '../../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import './ConfirmationPage.css';
+import type { ICartItem } from '../../types/types';
 
 export default function ConfirmationPage() {
     const { cartItems, getTotalItems, clearCart } = useCart();
@@ -52,7 +53,7 @@ export default function ConfirmationPage() {
             <div className="confirmation-container">
                 <h2>Seu Carrinho está Vazio</h2>
                 <p>Adicione itens ao cardápio para finalizar a compra.</p>
-                <button onClick={() => navigate('/student/cardapio')}>Voltar ao Cardápio</button>
+                <button className="back-button" onClick={() => navigate('/student/menu')}>Voltar ao Cardápio</button>
             </div>
         );
     }
@@ -61,7 +62,7 @@ export default function ConfirmationPage() {
         <div className="confirmation-container">
             <h2>Confirmação do Pedido</h2>
             <div className="cart-summary">
-                {cartItems.map((item, index) => (
+                {cartItems.map((item: ICartItem, index: number) => (
                     <div key={item.id} className="cart-item-summary">
                         <p>{index + 1} - {item.name} - Quantidade: {item.quantity}</p>
                     </div>
@@ -70,7 +71,7 @@ export default function ConfirmationPage() {
             <p className="total-items">Total de itens: {getTotalItems()}</p>
             <div className="confirmation-actions">
                 <button onClick={handleCheckout} className="checkout-button">Finalizar Compra</button>
-                <button onClick={() => navigate('/student/menu')} className="back-button">Voltar ao Cardápio</button>
+                <button className="back-button" onClick={() => navigate('/student/menu')}>Voltar ao Cardápio</button>
             </div>
         </div>
     );

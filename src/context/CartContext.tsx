@@ -1,23 +1,10 @@
 import { createContext, useState, useContext, useEffect } from 'react';
+import type { ICartContextType } from '../types/types';
 
-interface CartItem {
-    id: string;
-    quantity: number;
-}
 
-interface CartContextType {
-    cartItems: CartItem[];
-    addToCart: (product: { id: string;[key: string]: any }) => void;
-    removeFromCart: (productId: string) => void;
-    getTotalItems: () => number;
-    clearCart: () => void;
-}
+export const CartContext = createContext<ICartContextType | null>(null);
 
-export const CartContext = createContext<CartContextType | null>(null);
-
-// 2. Criação do Provider
 export const CartProvider = ({ children }:  { children: React.ReactNode }) => {
-    // Inicializa o estado do carrinho, tentando carregar do localStorage
     const [cartItems, setCartItems] = useState(() => {
         try {
             const localData = localStorage.getItem('cantina-cart');
@@ -28,7 +15,6 @@ export const CartProvider = ({ children }:  { children: React.ReactNode }) => {
         }
     });
 
-    // Efeito para salvar o carrinho no localStorage sempre que ele mudar
     useEffect(() => {
         localStorage.setItem('cantina-cart', JSON.stringify(cartItems));
     }, [cartItems]);
@@ -95,7 +81,6 @@ export const CartProvider = ({ children }:  { children: React.ReactNode }) => {
     );
 };
 
-// Hook customizado para facilitar o uso do Contexto
 export const useCart = () => {
     const context = useContext(CartContext);
     if (!context) {
