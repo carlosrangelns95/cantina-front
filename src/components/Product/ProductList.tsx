@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle, FaEdit, FaTrashAlt } from 'react-icons/fa';
 // import ConfirmModal from '../components/ConfirmModal';
-import './ProductList.css'
+import './ProductStyles.css'
+import ConfirmModal from '../ConfirmModal/ConfirmModal';
 
 export default function ProductList() {
     console.log('ProductList');
@@ -36,11 +37,11 @@ export default function ProductList() {
     }, []);
 
     const handleCreateNew = () => {
-        navigate('/products/new');
+        navigate('/admin/products/new');
     };
 
     const handleEdit = (id) => {
-        navigate(`/products/edit/${id}`);
+        navigate(`admin/products/edit/${id}`);
     };
 
     const handleDeleteClick = (id, name) => {
@@ -128,13 +129,13 @@ export default function ProductList() {
                 </ul>
             )}
 
-            {/* <ConfirmModal
+            <ConfirmModal
                 show={showDeleteModal}
                 title="Confirmar Exclusão"
                 message={`Tem certeza que deseja excluir o produto "${productToDelete?.name}"? Esta ação não pode ser desfeita.`}
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
-            /> */}
+            />
         </div>
     );
 };
