@@ -7,8 +7,10 @@ import MenuList from './components/MenuList/MenuList';
 import SelfRegister from './components/SelfRegister/SelfRegister';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage';
 import OrderHistory from './components/OrderHistory/OrderHistory';
-import ProductList from './components/ProductList/ProductList';
+import ProductList from './components/Product/ProductList';
+import ProductCreate from './components/Product/ProductCreate';
 import './App.css';
+import Dashboard from './components/Dashboard/Dashboard';
 
 
 function App() {
@@ -21,7 +23,11 @@ function App() {
 
         <Route element={<PrivateRoute allowedProfiles={['ADMIN']} />}>
           <Route path="/admin" element={<LayoutAdmin />}>
-           <Route path="products" element={<ProductList />} />
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="products" element={<ProductList />} />
+            <Route path="products/new" element={<ProductCreate />} />
+            <Route path="products/edit/:id" element={<ProductCreate />} />
           </Route>
         </Route>
 
@@ -34,6 +40,7 @@ function App() {
           </Route>
         </Route>
 
+        <Route path="*" element={<h1 className="text-center mt-5">404 - Página Não Encontrada</h1>} />
         <Route path="/logout" element={<p className="dashboard-container">Você foi desconectado.</p>} />
 
       </Routes>
