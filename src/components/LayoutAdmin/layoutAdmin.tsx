@@ -1,23 +1,18 @@
 import './layoutAdmin.css';
-import Sidebar from '../SideBar/SideBar';
+import AdminSidebar from '../SideBar/AdminSideBar';
+import { Outlet } from 'react-router-dom';
 
 export default function LayoutAdmin() {
-    const handleLogout = () => {
-        localStorage.removeItem('cantina-token');
-        window.location.href = '/login';
-    };
-
     return (
         <div className="dashboard-layout">
-            <Sidebar />
+            <AdminSidebar />
             <main className="dashboard-content">
                 <nav>
-                    <button onClick={handleLogout}>Sair</button>
+                    <p>Olá, fulano de tal</p>
                 </nav>
-                {/* <div className="dashboard-container">
-                    <h2>Bem-vindo, Administrador!</h2>
-                    <p>Esta é a área administrativa da cantina.</p>
-                </div> */}
+                <div className="dashboard-container">
+                    <Outlet />
+                </div>
             </main>
         </div>
     );
