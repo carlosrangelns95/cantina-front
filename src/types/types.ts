@@ -24,3 +24,11 @@ export interface ICartContextType {
     getTotalItems: () => number;
     clearCart: () => void;
 }
+
+export interface IConfirmModalProps {
+    show: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
+}

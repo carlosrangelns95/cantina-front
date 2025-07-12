@@ -8,9 +8,9 @@ import ConfirmModal from '../ConfirmModal/ConfirmModal';
 export default function ProductList() {
     console.log('ProductList');
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [productToDelete, setProductToDelete] = useState(null);
     const navigate = useNavigate();
 
@@ -40,8 +40,8 @@ export default function ProductList() {
         navigate('/admin/products/new');
     };
 
-    const handleEdit = (id) => {
-        navigate(`admin/products/edit/${id}`);
+    const handleEdit = (id: string) => {
+        navigate(`/admin/products/edit/${id}`, { replace: true });
     };
 
     const handleDeleteClick = (id, name) => {
@@ -52,10 +52,10 @@ export default function ProductList() {
     const handleConfirmDelete = async () => {
         if (!productToDelete) return;
 
-        setShowDeleteModal(false); // Fecha o modal primeiro
-        setLoading(true); // Opcional: mostrar loading enquanto exclui
+        setShowDeleteModal(false);
+        setLoading(true);
         try {
-            const response = await fetch(`${API_URL}/product/${productToDelete.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/product/${productToDelete.id}`, {
                 method: 'DELETE',
             });
             if (!response.ok) {
@@ -63,7 +63,7 @@ export default function ProductList() {
                 throw new Error(`Erro ao excluir: ${errorData.message || response.statusText}`);
             }
             alert('Produto excluído com sucesso!');
-            fetchProducts(); // Recarrega a lista
+            fetchProducts();
         } catch (err) {
             console.error('Erro ao excluir produto:', err);
             alert(`Erro ao excluir produto: ${err.message}`);

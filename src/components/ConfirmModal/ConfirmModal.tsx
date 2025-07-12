@@ -1,7 +1,8 @@
 import { FaExclamationTriangle } from 'react-icons/fa'
 import '../Product/ProductStyles.css';
+import type { IConfirmModalProps } from '../../types/types';
 
-export default function ConfirmModal({ show, title, message, onConfirm, onCancel }) {
+export default function ConfirmModal({ show, title, message, onConfirm, onCancel }: IConfirmModalProps) {
     if (!show) {
         return null;
     }

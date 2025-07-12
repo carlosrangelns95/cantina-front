@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Card, Spinner, Alert } from 'react-bootstrap';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
-// import { fetchProductById, updateProduct } from '../api/product';
+
+const categories = ['SALGADO', 'DOCE', 'BEBIDA', 'LANCHE', 'FRUTA'];
 
 const ProductEdit = () => {
-    const { id } = useParams(); // Pega o ID da URL
+    const { id } = useParams();
     const [productData, setProductData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -16,26 +17,35 @@ const ProductEdit = () => {
         const loadProduct = async () => {
             setLoading(true);
             setError(null);
-            const data = await fetchProductById(id);
+            const rest = await fetch(`${import.meta.env.VITE_API_URL}/product/${id}`);
+            if (!rest.ok) {
+                throw new Error('Falha na requisição para o endpoint de produto.');
+            }
+
+            const data = await rest.json();
+
             if (data) {
                 setProductData(data);
             } else {
                 setError('Produto não encontrado ou erro ao carregar.');
             }
+
+            console.log('data: ', data);
+
             setLoading(false);
         };
         loadProduct();
     }, [id]);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setProductData({
             ...productData,
-            [name]: name === 'price' ? parseFloat(value) : value,
+            [name]: name === 'value' ? parseFloat(value) : value,
         });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSaving(true);
         setError(null);
@@ -46,7 +56,23 @@ const ProductEdit = () => {
             return;
         }
 
-        const updatedProduct = await updateProduct(id, productData);
+        const resp = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id,
+                ...productData,
+            }),
+        });
+
+        if (!resp.ok) {
+            throw new Error('Falha na requisição para o endpoint de produto.');
+        }
+
+        const updatedProduct = await resp.json();
+
         if (updatedProduct) {
             alert('Produto atualizado com sucesso!');
             navigate('/products');
@@ -71,7 +97,7 @@ const ProductEdit = () => {
         return (
             <Container className="mt-5">
                 <Alert variant="danger">{error}</Alert>
-                <Button onClick={() => navigate('/products')}>Voltar para a Lista</Button>
+                <Button className='btn-back' onClick={() => navigate('/admin/products')}>Voltar para a Lista</Button>
             </Container>
         );
     }
@@ -88,7 +114,7 @@ const ProductEdit = () => {
         <Container className="mt-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h2 className="mb-0">Editar Produto</h2>
-                <Button variant="secondary" onClick={() => navigate('/products')}>
+                <Button variant="secondary" onClick={() => navigate('/admin/products')}>
                     <FaArrowLeft className="me-2" /> Voltar
                 </Button>
             </div>
@@ -110,12 +136,12 @@ const ProductEdit = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="price">Preço</Form.Label>
+                            <Form.Label htmlFor="value">Preço</Form.Label>
                             <Form.Control
                                 type="number"
-                                id="price"
-                                name="price"
-                                value={productData.price || 0}
+                                id="value"
+                                name="value"
+                                value={productData.value || 0}
                                 onChange={handleChange}
                                 step="0.01"
                                 required
@@ -123,18 +149,23 @@ const ProductEdit = () => {
                         </Form.Group>
 
                         <Form.Group className="mb-3">
-                            <Form.Label htmlFor="description">Descrição</Form.Label>
-                            <Form.Control
-                                as="textarea"
-                                id="description"
-                                name="description"
-                                value={productData.description || ''}
+                            <Form.Label htmlFor="category">Categoria</Form.Label>
+                            <Form.Select
+                                id="category"
+                                name="category"
+                                value={productData.category}
                                 onChange={handleChange}
-                                rows={3}
-                            />
+                                required
+                            >
+                                {categories.map(category => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
 
-                        {/* Adicione outros campos aqui */}
+
 
                         <Button variant="primary" type="submit" disabled={saving} className="w-100 mt-3">
                             {saving ? (

@@ -11,6 +11,7 @@ import ProductList from './components/Product/ProductList';
 import ProductCreate from './components/Product/create/ProductCreate';
 import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
+import ProductEdit from './components/Product/ProductEdit';
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="products" element={<ProductList />} />
             <Route path="products/new" element={<ProductCreate />} />
-            <Route path="products/edit/:id" element={<ProductCreate />} />
+            <Route path="products/edit/:id" element={<ProductEdit />} />
           </Route>
         </Route>
 
