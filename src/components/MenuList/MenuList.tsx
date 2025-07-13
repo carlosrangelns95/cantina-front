@@ -8,7 +8,7 @@ export default function MenuList() {
     const [error, setError] = useState<string | null>(null);
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('');
-    const { addToCart, cartItems  } = useCart();
+    const { addToCart, cartItems } = useCart();
 
 
     const fetchItems = useCallback(async () => {
@@ -54,7 +54,7 @@ export default function MenuList() {
 
         // Aplica o filtro de categoria
         if (category) {
-            currentItems = currentItems.filter(item =>
+            currentItems = currentItems.filter((item) =>
                 item.category === category
             );
         }
@@ -86,11 +86,11 @@ export default function MenuList() {
                 />
                 <select value={category} onChange={handleCategoryChange}>
                     <option value="">Todas as Categorias</option>
-                    <option value="SALGADO">Salgados</option>
-                    <option value="DOCE">Doces</option>
-                    <option value="BEBIDA">Bebidas</option>
-                    <option value="LANCHE">Lanches</option>
-                    <option value="FRUTA">Frutas</option>
+                    <option value="salgado">Salgados</option>
+                    <option value="doce">Doces</option>
+                    <option value="bebida">Bebidas</option>
+                    <option value="lanche">Lanches</option>
+                    <option value="fruta">Frutas</option>
                 </select>
             </div>
 
