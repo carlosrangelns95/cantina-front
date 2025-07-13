@@ -31,22 +31,20 @@ export default function SelfRegister() {
             phone,
         };
 
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
-            });
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
 
-            if (!response.ok) {
-                throw new Error('Falha na requisição para o endpoint de cadastro.');
-            }
-            
+        if (!response.ok) {
+            const teste = await response.json();
+            setError(teste.message[0]);
+        } else {
+
             await response.json();
-            
-
             setSuccessMessage('Cadastro realizado com sucesso! Você será redirecionado para o login.');
 
             setName('');
@@ -59,19 +57,8 @@ export default function SelfRegister() {
             setTimeout(() => {
                 navigate('/login', { replace: true });
             }, 3000);
-
-        } catch (err) {
-            console.error('Erro no cadastro:', err);
-            if (err.response && err.response.data && err.response.data.message) {
-                if (Array.isArray(err.response.data.message)) {
-                    setError(err.response.data.message.join(', '));
-                } else {
-                    setError(err.response.data.message);
-                }
-            } else {
-                setError('Erro ao realizar o cadastro. Verifique os dados e tente novamente.');
-            }
         }
+
     };
 
     return (
