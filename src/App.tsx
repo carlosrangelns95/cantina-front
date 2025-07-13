@@ -6,12 +6,13 @@ import PrivateRoute from './components/privateRoute';
 import MenuList from './components/MenuList/MenuList';
 import SelfRegister from './components/SelfRegister/SelfRegister';
 import ConfirmationPage from './components/ConfirmationPage/ConfirmationPage';
-import OrderHistory from './components/OrderHistory/OrderHistory';
+import OrderHistory from './components/Order/OrderHistory/OrderHistory';
 import ProductList from './components/Product/ProductList';
 import ProductCreate from './components/Product/create/ProductCreate';
 import './App.css';
 import Dashboard from './components/Dashboard/Dashboard';
 import ProductEdit from './components/Product/ProductEdit';
+import OrderList from './components/Order/OrderList/OrderList';
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="products" element={<ProductList />} />
             <Route path="products/new" element={<ProductCreate />} />
             <Route path="products/edit/:id" element={<ProductEdit />} />
+            <Route path="history" element={<OrderList />} />
           </Route>
         </Route>
 

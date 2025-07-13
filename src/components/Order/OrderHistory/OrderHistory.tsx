@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './OrderHistory.css';
-import type { IOrder } from '../../types/types';
+import type { IOrder } from '../../../types/types';
 
 export default function OrderHistory() {
     const [orders, setOrders] = useState([]);

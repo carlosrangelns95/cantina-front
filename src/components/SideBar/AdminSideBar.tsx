@@ -22,7 +22,7 @@ export default function AdminSidebar() {
                     <NavLink to="/admin/products">Produtos</NavLink>
                 </li>
                 <li>
-                    <NavLink to="/admin/history">Histórico</NavLink>
+                    <NavLink to="/admin/history">Pedidos</NavLink>
                 </li>
             </ul>
             <div className="sidebar-footer">

@@ -39,3 +39,11 @@ export interface IProduct {
     value: number;
     category: string;
 }
+
+export interface IPedido {
+    id: string;
+    name: string;
+    total: number;
+    category: string;
+    createdAt: string;
+}
