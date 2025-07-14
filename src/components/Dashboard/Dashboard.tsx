@@ -1,106 +1,77 @@
-import { useState, useEffect } from 'react';
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    ArcElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
-import { Bar, Doughnut } from 'react-chartjs-2';
+// src/components/Dashboard/Dashboard.tsx
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend } from 'chart.js';
 import { parseISO, isAfter, isBefore, startOfDay, endOfDay } from 'date-fns';
-import DashboardCard from './DashboardCard';
-import './DashboardStyles.css'; // Importa os estilos do dashboard
+import { useState, useEffect } from 'react';
+import { Bar, Doughnut } from 'react-chartjs-2'; // Mantido Bar para futuras implementações da Receita Diária
+import DashboardCard from './DashboardCard'; // Assumindo que você tem este componente
+import './DashboardStyles.css'; // Assumindo que você tem este CSS
 
-// Registrar componentes do Chart.js
+// Assumindo a interface IOrder está definida em outro lugar, por exemplo, types/types.ts
+import type { IOrder } from '../../types/types';
+
+// Registrar componentes do Chart.js que serão usados
 ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
-    ArcElement,
+    ArcElement, // Necessário para o Doughnut
     Title,
     Tooltip,
     Legend
 );
 
-// Dados mockados (simulando a interface IOrder)
-const mockOrders = [
-    {
-        id: 'ord1',
-        createdAt: '2025-07-01T10:00:00Z',
-        status: 'Concluído',
-        total: '15.50',
-        orderItems: [
-            { id: 'item1', name: 'Coxinha', quantity: 2, price: '3.00', category: 'Salgados' },
-            { id: 'item2', name: 'Coca-Cola', quantity: 1, price: '4.50', category: 'Bebidas' },
-            { id: 'item3', name: 'Brigadeiro', quantity: 3, price: '2.00', category: 'Doces' },
-        ],
-    },
-    {
-        id: 'ord2',
-        createdAt: '2025-07-05T14:30:00Z',
-        status: 'Concluído',
-        total: '25.00',
-        orderItems: [
-            { id: 'item4', name: 'Pizza Broto', quantity: 1, price: '15.00', category: 'Salgados' },
-            { id: 'item5', name: 'Suco de Laranja', quantity: 2, price: '5.00', category: 'Bebidas' },
-        ],
-    },
-    {
-        id: 'ord3',
-        createdAt: '2025-07-10T09:15:00Z',
-        status: 'Concluído',
-        total: '8.00',
-        orderItems: [
-            { id: 'item6', name: 'Bolo de Cenoura', quantity: 1, price: '8.00', category: 'Doces' },
-        ],
-    },
-    {
-        id: 'ord4',
-        createdAt: '2025-07-12T01:01:09.000Z', // Data do seu exemplo
-        status: 'Concluído',
-        total: '6.00',
-        orderItems: [
-            { id: 'item7', name: 'Pão de Queijo', quantity: 2, price: '2.00', category: 'Salgados' },
-            { id: 'item8', name: 'Café', quantity: 1, price: '2.00', category: 'Bebidas' },
-        ],
-    },
-    {
-        id: 'ord5',
-        createdAt: '2025-07-11T21:08:52.000Z', // Data do seu exemplo
-        status: 'Concluído',
-        total: '12.00',
-        orderItems: [
-            { id: 'item9', name: 'Empada de Frango', quantity: 1, price: '6.00', category: 'Salgados' },
-            { id: 'item10', name: 'Chá Gelado', quantity: 1, price: '3.00', category: 'Bebidas' },
-            { id: 'item11', name: 'Pudim', quantity: 1, price: '3.00', category: 'Doces' },
-        ],
-    },
-];
-
-
 const Dashboard = () => {
+    const [loading, setLoading] = useState<boolean>(true);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [filteredOrders, setFilteredOrders] = useState(mockOrders); // Começa com todos os pedidos
+    const [allOrders, setAllOrders] = useState<IOrder[]>([]); // Armazena todos os pedidos sem filtro de data
+    const [filteredOrders, setFilteredOrders] = useState<IOrder[]>([]); // Armazena pedidos filtrados por data
 
-    // Efeitos para filtrar pedidos quando as datas mudam
+    const fetchOrders = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/order`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('cantina-token')}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Erro ${response.status}: ${errorText}`);
+            }
+
+            const data: IOrder[] = await response.json();
+            setAllOrders(data); // Salva todos os pedidos
+            setFilteredOrders(data); // Inicialmente, filteredOrders são todos os pedidos
+        } catch (err) {
+            console.error('Erro ao buscar pedidos:', err);
+            // setError('Não foi possível carregar os pedidos. Tente novamente mais tarde.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Efeito para buscar os pedidos na montagem do componente
     useEffect(() => {
-        let filtered = mockOrders;
+        fetchOrders();
+    }, []);
+
+    // Efeito para filtrar pedidos quando as datas (ou allOrders) mudam
+    useEffect(() => {
+        let currentFiltered = [...allOrders]; // Sempre começa com todos os pedidos
 
         if (startDate) {
             const start = startOfDay(parseISO(startDate));
-            filtered = filtered.filter(order => isAfter(parseISO(order.createdAt), start));
+            currentFiltered = currentFiltered.filter(order => isAfter(parseISO(order.createdAt), start));
         }
         if (endDate) {
             const end = endOfDay(parseISO(endDate));
-            filtered = filtered.filter(order => isBefore(parseISO(order.createdAt), end));
+            currentFiltered = currentFiltered.filter(order => isBefore(parseISO(order.createdAt), end));
         }
 
-        setFilteredOrders(filtered);
-    }, [startDate, endDate]);
+        setFilteredOrders(currentFiltered);
+    }, [startDate, endDate, allOrders]); // Depende de startDate, endDate e allOrders (para re-filtrar se os dados brutos mudarem)
 
     // Métrica: Total de Itens Vendidos
     const totalItemsSold = filteredOrders.reduce((acc, order) => {
@@ -110,15 +81,17 @@ const Dashboard = () => {
     // Métrica: Total de Vendas (Receita)
     const totalRevenue = filteredOrders.reduce((acc, order) => {
         return acc + parseFloat(order.total);
-    }, 0).toFixed(2); // Formata para 2 casas decimais
+    }, 0).toFixed(2);
 
     // Métrica: Número de Pedidos
     const numberOfOrders = filteredOrders.length;
 
-    // Processar dados para gráfico de itens por categoria
-    const itemsByCategory = filteredOrders.reduce((acc, order) => {
+    // --- Processar dados para gráfico de itens por categoria ---
+    const itemsByCategory = filteredOrders.reduce((acc: { [key: string]: number }, order) => {
         order.orderItems.forEach(item => {
-            const category = item.category || 'Outros'; // Garante que há uma categoria
+            // Garante que `product` e `category` existem antes de acessar
+            // O `?` após `item.product` é crucial se `product` puder ser nulo/undefined
+            const category = item.product?.category || 'Outros';
             acc[category] = (acc[category] || 0) + item.quantity;
         });
         return acc;
@@ -134,12 +107,12 @@ const Dashboard = () => {
                 label: 'Quantidade Vendida',
                 data: categoryData,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 206, 86, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)',
-                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(255, 99, 132, 0.7)', // Vermelho
+                    'rgba(54, 162, 235, 0.7)', // Azul
+                    'rgba(255, 206, 86, 0.7)', // Amarelo
+                    'rgba(75, 192, 192, 0.7)', // Verde
+                    'rgba(153, 102, 255, 0.7)', // Roxo
+                    'rgba(255, 159, 64, 0.7)',  // Laranja
                 ],
                 borderColor: [
                     'rgba(255, 99, 132, 1)',
@@ -158,7 +131,7 @@ const Dashboard = () => {
         responsive: true,
         plugins: {
             legend: {
-                position: 'top',
+                position: 'top' as const, // Chart.js exige 'top' como tipo literal
             },
             title: {
                 display: false,
@@ -166,7 +139,7 @@ const Dashboard = () => {
             },
             tooltip: {
                 callbacks: {
-                    label: function (context) {
+                    label: function (context: any) { // Usar 'any' para simplicidade do tipo de contexto aqui
                         let label = context.label || '';
                         if (label) {
                             label += ': ';
@@ -181,8 +154,70 @@ const Dashboard = () => {
         },
     };
 
-    // Processar dados para gráfico de vendas ao longo do tempo (Exemplo: Vendas diárias)
-    const salesByDay = filteredOrders.reduce((acc, order) => {
+    // --- Processar dados para gráfico de Pedidos por Status ---
+    const ordersByStatus = filteredOrders.reduce((acc: { [key: string]: number }, order) => {
+        const status = order.status || 'Indefinido'; // Garante que há um status, mesmo que nulo
+        acc[status] = (acc[status] || 0) + 1; // Incrementa a contagem para o status
+        return acc;
+    }, {});
+
+    const statusLabels = Object.keys(ordersByStatus);
+    const statusData = Object.values(ordersByStatus);
+
+    const statusChartData = {
+        labels: statusLabels,
+        datasets: [
+            {
+                label: 'Número de Pedidos',
+                data: statusData,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.7)', // Verde/Azul para Concluído
+                    'rgba(255, 206, 86, 0.7)', // Amarelo para Pendente/Em Processamento
+                    'rgba(255, 99, 132, 0.7)', // Vermelho para Cancelado
+                    'rgba(153, 102, 255, 0.7)', // Roxo para outros status
+                    'rgba(54, 162, 235, 0.7)', // Azul
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(54, 162, 235, 1)',
+                ],
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const statusChartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: false,
+                text: 'Pedidos por Status',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context: any) {
+                        let label = context.label || '';
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed !== null) {
+                            label += context.parsed + ' pedidos';
+                        }
+                        return label;
+                    }
+                }
+            }
+        },
+    };
+
+    // --- Processar dados para gráfico de vendas ao longo do tempo (Receita Diária) ---
+    const salesByDay = filteredOrders.reduce((acc: { [key: string]: number }, order) => {
         const date = order.createdAt.split('T')[0]; // Pega apenas a data (YYYY-MM-DD)
         acc[date] = (acc[date] || 0) + parseFloat(order.total);
         return acc;
@@ -208,7 +243,7 @@ const Dashboard = () => {
         responsive: true,
         plugins: {
             legend: {
-                position: 'top',
+                position: 'top' as const,
             },
             title: {
                 display: false,
@@ -216,7 +251,7 @@ const Dashboard = () => {
             },
             tooltip: {
                 callbacks: {
-                    label: function (context) {
+                    label: function (context: any) {
                         let label = context.dataset.label || '';
                         if (label) {
                             label += ': ';
@@ -246,6 +281,15 @@ const Dashboard = () => {
         },
     };
 
+
+    if (loading) {
+        return (
+            <div className="product-container message-container">
+                <div className="spinner"></div>
+                <p>Carregando dados do dashboard...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="dashboard-container">
@@ -280,9 +324,13 @@ const Dashboard = () => {
                     <Doughnut data={categoryChartData} options={categoryChartOptions} />
                 </div>
                 <div className="chart-card">
+                    <h3>Pedidos por Status</h3>
+                    <Doughnut data={statusChartData} options={statusChartOptions} />
+                </div>
+                {/* <div className="chart-card">
                     <h3>Receita Diária</h3>
                     <Bar data={salesChartData} options={salesChartOptions} />
-                </div>
+                </div> */}
             </div>
         </div>
     );
